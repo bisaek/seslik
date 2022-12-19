@@ -21,19 +21,27 @@
 				const itemRef = doc(db, 'items', item.id);
 				const itemData = await getDoc(itemRef);
 				items.push({ ...item.data(), ...itemData.data(), id: item.id });
+				items = items;
 			});
-			items = items;
 			console.log(items);
 		} catch (error) {
 			console.error(error);
 		}
 	}
 	// getMyItems();
+
 	whenLoggedIn(getMyItems);
 </script>
 
 <ul>
+	sd
 	{#each items as item}
-		<li>test</li>
+		<li class="flex flex-row">
+			<img src={item.url} class="w-28" alt="" />
+			<div class="flex flex-col">
+				<label for="">{item.name}</label>
+				<input type="number" name="" value={item.s} id="" />
+			</div>
+		</li>
 	{/each}
 </ul>
