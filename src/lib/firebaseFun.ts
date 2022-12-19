@@ -1,6 +1,6 @@
-import { auth } from 'src/routes/firebase';
+import { auth } from '$lib/firebase';
 
-async function whenLoggedIn(f: Function) {
+export async function whenLoggedIn(f: Function) {
 	auth.onAuthStateChanged(async (user) => {
 		if (user) {
 			f(user);

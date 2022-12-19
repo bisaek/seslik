@@ -2,7 +2,7 @@
 	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 	import { collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
-	import { auth, db } from './firebase';
+	import { auth, db } from '$lib/firebase';
 	import '../app.css';
 	import bag from '$lib/bag.svg';
 	let signedIn = false;

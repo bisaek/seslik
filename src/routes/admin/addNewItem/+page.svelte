@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { db } from '../../firebase';
+	import { db } from '$lib/firebase';
 	import { addDoc, collection, FieldPath } from 'firebase/firestore';
 	import { number, string, z } from 'zod';
 	let itemDetails = {
