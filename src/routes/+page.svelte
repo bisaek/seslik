@@ -9,7 +9,10 @@
 		getDocs,
 		updateDoc,
 		doc,
-		arrayUnion
+		arrayUnion,
+		getDoc,
+		setDoc,
+		increment
 	} from 'firebase/firestore';
 	/**
 	 * @type {import("@firebase/firestore").DocumentData[]}
@@ -34,14 +37,12 @@
 	}
 	getItems();
 
-	async function addToBag(ItemId: String) {
+	async function addToBag(ItemId: string) {
 		if (!auth.currentUser) return;
 		console.log(ItemId);
 		try {
-			const userRef = doc(db, 'users', auth.currentUser?.uid);
-			await updateDoc(userRef, {
-				bag: arrayUnion(ItemId)
-			});
+			const userRef = doc(db, 'users', auth.currentUser?.uid, 'bag', ItemId);
+			await setDoc(userRef, { s: increment(1) }, { merge: true });
 		} catch (error) {
 			console.log(error);
 		}
@@ -57,7 +58,9 @@
 			<p>{item.name}</p>
 			<label for="price">price: {item.price}</label>
 			<label for="stocks">stocks: {item.stocks}</label>
-			<button on:click={() => addToBag(item.id)} class="self-end">hello</button>
+			<button on:click={() => addToBag(item.id)} class="self-end">
+				add to backet
+			</button>
 		</div>
 	{/each}
 </div>
