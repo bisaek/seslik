@@ -1,15 +1,27 @@
 <script>
 	import { auth, db } from '$lib/firebase';
-	import { addDoc, collection, doc } from 'firebase/firestore';
+	import { addDoc, collection, doc, getDocs, query } from 'firebase/firestore';
 
 	// export let items = [];
 	let lervering = false;
 
 	async function bestil() {
-		console.log(items);
+		console.log();
 		if (!auth.currentUser) return;
-		const items = await 
-		const orderRef = await addDoc(collection(db, 'items'), { items });
+		try {
+			const itemsQuery = query(
+				collection(db, 'users', auth.currentUser.uid, 'bag')
+			);
+			const itemsData = await getDocs(itemsQuery);
+			let items = [];
+			itemsData.forEach((item) =>
+				items.push({ id: item.data().id, quantity: item.data().s })
+			);
+
+			const orderRef = await addDoc(collection(db, 'orders'), { items });
+		} catch (error) {
+			console.error(error);
+		}
 	}
 </script>
 
@@ -24,7 +36,6 @@
 				type="checkbox"
 				id="lervering"
 				name="lervering"
-				required
 			/>
 		</div>
 		{#if lervering}
