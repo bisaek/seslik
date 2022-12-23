@@ -14,7 +14,7 @@
 	function updateItem() {
 		if (!auth.currentUser) return;
 		const itemRef = doc(db, 'users', auth.currentUser.uid, 'bag', item.id);
-		setDoc(itemRef, item, { merge: true });
+		setDoc(itemRef, { s: item.s }, { merge: true });
 	}
 	function increaseQuantity() {
 		item.s++;
