@@ -5,7 +5,7 @@
 	// export let items = [];
 	let lervering = false;
 
-	async function bestil() {
+	async function order() {
 		console.log();
 		if (!auth.currentUser) return;
 		try {
@@ -28,7 +28,10 @@
 <div>
 	<h1 class="text-3xl font-bold text-center text-white mb-4">Check Out</h1>
 
-	<form class="bg-gray-200 shadow-md rounded-md p-4">
+	<form
+		class="bg-gray-200 shadow-md rounded-md p-4"
+		on:submit|preventDefault={order}
+	>
 		<div class="mb-4">
 			<label class="font-bold mb-2 text-gray-700" for="name">Lervering</label>
 			<input
@@ -75,10 +78,8 @@
 			/>
 		</div>
 		<div class="mb-4">
-			<button
-				class="bg-gray-300 rounded-full px-4 py-2"
-				on:click={bestil}
-				type="submit">Bestil</button
+			<button class="bg-gray-300 rounded-full px-4 py-2" ¨ type="submit"
+				>Bestil</button
 			>
 		</div>
 	</form>
