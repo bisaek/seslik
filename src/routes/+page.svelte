@@ -51,16 +51,19 @@
 
 <div class="flex flex-row gap-8 items-stretch justify-around flex-wrap ">
 	{#each items as item}
-		<div
-			class="item flex justify-center flex-col flex-wrap bg-slate-800 w-80 text-slate-100 rounded-3xl p-6 "
-		>
-			<img src={item.url} alt="" />
-			<p>{item.name}</p>
-			<label for="price">price: {item.price}</label>
-			<label for="stocks">stocks: {item.stocks}</label>
-			<button on:click={() => addToBag(item.id)} class="self-end">
-				add to backet
-			</button>
+		<div class="product bg-white shadow-md rounded-md p-4 flex items-center">
+			<img src={item.url} alt="Product image" class=" h-32 rounded-full mr-4" />
+			<div class="flex-1">
+				<h3 class="text-2xl font-bold leading-tight mb-2">{item.name}</h3>
+				<p class="text-gray-600 text-sm mb-4">Product description</p>
+				<div class="flex items-center">
+					<p class="text-xl font-bold mr-2">{item.price} kr</p>
+					<button
+						class="btn bg-blue-500 text-white rounded-full px-4 py-2"
+						on:click={() => addToBag(item.id)}>Add to basket</button
+					>
+				</div>
+			</div>
 		</div>
 	{/each}
 </div>
