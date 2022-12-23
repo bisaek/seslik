@@ -15,7 +15,7 @@
 			const itemsData = await getDocs(itemsQuery);
 			let items = [];
 			itemsData.forEach((item) =>
-				items.push({ id: item.id, quantity: item.data().s })
+				items.push({ id: item.id, quantity: item.data().quantity })
 			);
 
 			const orderRef = await addDoc(collection(db, 'orders'), { items });

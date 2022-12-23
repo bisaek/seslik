@@ -14,15 +14,15 @@
 	function updateItem() {
 		if (!auth.currentUser) return;
 		const itemRef = doc(db, 'users', auth.currentUser.uid, 'bag', item.id);
-		setDoc(itemRef, { s: item.s }, { merge: true });
+		setDoc(itemRef, { s: item.quantity }, { merge: true });
 	}
 	function increaseQuantity() {
-		item.s++;
+		item.quantity++;
 		updateItem();
 	}
 	function decreaseQuantity() {
-		if (item.s <= 1) return;
-		item.s--;
+		if (item.quantity <= 1) return;
+		item.quantity--;
 		updateItem();
 	}
 	async function remove() {
@@ -42,7 +42,7 @@
 			<h3 class="text-xl font-bold mb-2">{item.name}</h3>
 			<!-- <p class="text-gray-600 mb-2">Product description goes here</p> -->
 			<p class="text-gray-700 mb-2">
-				Quantity: {item.s}
+				Quantity: {item.quantity}
 				<span class="bg-slate-100 rounded-full">
 					<button class="py-2 px-3" on:click={increaseQuantity}>+</button>
 					<button class="py-2 px-3" on:click={decreaseQuantity}>-</button>
@@ -50,7 +50,7 @@
 			</p>
 		</div>
 		<div>
-			<p class="text-gray-700 mb-2">{item.price * item.s} kr</p>
+			<p class="text-gray-700 mb-2">{item.price * item.quantity} kr</p>
 			<button
 				on:click={remove}
 				class="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline"

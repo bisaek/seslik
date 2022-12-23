@@ -42,7 +42,7 @@
 		console.log(ItemId);
 		try {
 			const userRef = doc(db, 'users', auth.currentUser?.uid, 'bag', ItemId);
-			await setDoc(userRef, { s: increment(1) }, { merge: true });
+			await setDoc(userRef, { quantity: increment(1) }, { merge: true });
 		} catch (error) {
 			console.log(error);
 		}
