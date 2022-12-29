@@ -5,6 +5,9 @@
 
 	// export let items = [];
 	let lervering = false;
+	let roomNumber: number = 0;
+	let name: string;
+	let elevNr: number;
 
 	async function order() {
 		console.log();
@@ -19,7 +22,13 @@
 				items.push({ id: item.id, quantity: item.data().quantity })
 			);
 
-			const orderRef = await addDoc(collection(db, 'orders'), { items });
+			const orderRef = await addDoc(collection(db, 'orders'), {
+				items,
+				roomNumber,
+				name,
+				elevNr,
+				lervering
+			});
 		} catch (error) {
 			console.error(error);
 		}
@@ -53,6 +62,7 @@
 					id="værelse"
 					name="værelse"
 					required
+					bind:value={roomNumber}
 				/>
 			</div>
 		{/if}
@@ -64,6 +74,7 @@
 				id="name"
 				name="name"
 				required
+				bind:value={name}
 			/>
 		</div>
 		<div class="mb-4">
@@ -76,6 +87,7 @@
 				id="ElevNr"
 				name="ElevNr"
 				required
+				bind:value={elevNr}
 			/>
 		</div>
 		<div class="mb-4">

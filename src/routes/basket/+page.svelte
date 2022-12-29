@@ -50,20 +50,6 @@
 
 		{#each items as item}
 			<BagItem {item} />
-			<!-- <li class="flex flex-row">
-			<img src={item.url} class="w-28" alt="" />
-			<div class="flex flex-col">
-				<label for="">{item.name}</label>
-				<input
-					type="number"
-					name=""
-					bind:value={item.s}
-					on:input={() => updateItem(item)}
-					id=""
-				/>
-				<label for="">{item.price * item.s} kr</label>
-			</div>
-		</li> -->
 		{/each}
 	</div>
 

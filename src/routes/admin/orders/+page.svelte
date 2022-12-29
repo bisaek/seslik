@@ -75,7 +75,9 @@
 						}}
 						class="bg-slate-200 p-3 rounded">cancel</button
 					>
-					<button class="bg-slate-200 p-3 rounded">done</button>
+					<button on:click={() => done(order)} class="bg-slate-200 p-3 rounded"
+						>done</button
+					>
 				</div>
 			</div>
 		{/if}
