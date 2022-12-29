@@ -53,14 +53,12 @@
 		{#if signedIn}
 			<button
 				on:click={logOut}
-				href="#"
 				class="btn bg-gray-300 text-gray-800 rounded-full px-4 py-2 mr-4 hover:bg-gray-400"
 				>Sign out</button
 			>
 		{:else}
 			<button
 				on:click={signIn}
-				href="#"
 				class="btn bg-gray-300 text-gray-800 rounded-full px-4 py-2 mr-4 hover:bg-gray-400"
 				>Sign in</button
 			>
