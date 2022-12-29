@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		deleteDoc,
 		doc,
@@ -7,27 +7,42 @@
 		setDoc
 	} from 'firebase/firestore';
 	import { auth, db } from '../firebase';
+	import type { Item } from '$lib/types';
 
-	export let item = {};
+	export let item: Item;
 	let removed = false;
 
 	function updateItem() {
 		if (!auth.currentUser) return;
-		const itemRef = doc(db, 'users', auth.currentUser.uid, 'bag', item.id);
+		const itemRef = doc(
+			db,
+			'users',
+			auth.currentUser.uid,
+			'bag',
+			item.id || ''
+		);
 		setDoc(itemRef, { quantity: item.quantity }, { merge: true });
 	}
 	function increaseQuantity() {
+		if (!item.quantity) item.quantity = 1;
 		item.quantity++;
 		updateItem();
 	}
 	function decreaseQuantity() {
+		if (!item.quantity) item.quantity = 1;
 		if (item.quantity <= 1) return;
 		item.quantity--;
 		updateItem();
 	}
 	async function remove() {
 		if (!auth.currentUser) return;
-		const itemRef = doc(db, 'users', auth.currentUser.uid, 'bag', item.id);
+		const itemRef = doc(
+			db,
+			'users',
+			auth.currentUser.uid,
+			'bag',
+			item.id || ''
+		);
 		await deleteDoc(itemRef);
 		removed = true;
 	}
@@ -50,7 +65,9 @@
 			</p>
 		</div>
 		<div>
-			<p class="text-gray-700 mb-2">{item.price * item.quantity} kr</p>
+			<p class="text-gray-700 mb-2">
+				{(item.price || 0) * (item.quantity || 1)} kr
+			</p>
 			<button
 				on:click={remove}
 				class="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline"

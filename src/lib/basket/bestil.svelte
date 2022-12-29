@@ -1,6 +1,7 @@
-<script>
+<script lang="ts">
 	import { auth, db } from '$lib/firebase';
 	import { addDoc, collection, doc, getDocs, query } from 'firebase/firestore';
+	import type { Item } from '$lib/types';
 
 	// export let items = [];
 	let lervering = false;
@@ -13,7 +14,7 @@
 				collection(db, 'users', auth.currentUser.uid, 'bag')
 			);
 			const itemsData = await getDocs(itemsQuery);
-			let items = [];
+			let items: Item[] = [];
 			itemsData.forEach((item) =>
 				items.push({ id: item.id, quantity: item.data().quantity })
 			);
@@ -78,7 +79,7 @@
 			/>
 		</div>
 		<div class="mb-4">
-			<button class="bg-gray-300 rounded-full px-4 py-2" ¨ type="submit"
+			<button class="bg-gray-300 rounded-full px-4 py-2" type="submit"
 				>Bestil</button
 			>
 		</div>

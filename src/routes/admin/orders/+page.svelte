@@ -10,9 +10,10 @@
 		getDocs,
 		query
 	} from 'firebase/firestore';
+	import type { Order, Item } from '$lib/types';
 
 	let admin: boolean;
-	let orders = [];
+	let orders: Order[] = [];
 
 	whenLoggedIn(async (user: User) => {
 		admin = await isAdmin(user.uid);
@@ -20,15 +21,15 @@
 		const ordersQuery = query(collection(db, 'orders'));
 		const ordersData = await getDocs(ordersQuery);
 		ordersData.forEach(async (order) => {
-			let orderData = order.data();
+			let orderData: Order = order.data();
 			orderData.id = order.id;
 			orderData.exists = true;
 			orderData.totalPrice = 0;
+			if (!orderData.items) return;
 			for (let [index, item] of orderData.items.entries()) {
-				const itemRef = doc(db, 'items', item.id);
+				const itemRef = doc(db, 'items', item.id || '');
 				const itemData = await getDoc(itemRef);
-
-				orderData.totalPrice += itemData.data()?.price * item.quantity;
+				orderData.totalPrice += itemData.data()?.price * (item.quantity || 1);
 				orderData.items[index] = { ...item, ...itemData.data() };
 			}
 
@@ -39,12 +40,12 @@
 		console.log(orders);
 	});
 
-	function done(order) {
+	function done(order: Order) {
 		removeOrder(order);
 	}
 
-	function removeOrder(order) {
-		const orderRef = doc(db, 'orders', order.id);
+	function removeOrder(order: Order) {
+		const orderRef = doc(db, 'orders', order.id || '');
 		deleteDoc(orderRef);
 		order.exists = false;
 		// console.log(orders);
@@ -60,7 +61,7 @@
 			<div>
 				<h2 class="text-xl">products</h2>
 				<ul>
-					{#each order.items as item}
+					{#each order.items || [] as item}
 						<li>
 							{item.name} X {item.quantity}
 						</li>
