@@ -12,4 +12,8 @@ export interface Order {
 	id?: string;
 	totalPrice?: number;
 	exists?: boolean;
+	elevNr: number;
+	levering: boolean;
+	name: string;
+	roomNumber: number;
 }
