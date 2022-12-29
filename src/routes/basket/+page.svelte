@@ -67,6 +67,6 @@
 		{/each}
 	</div>
 
-	<Bestil {items} />
+	<Bestil />
 </div>
 <!-- {/if} -->
