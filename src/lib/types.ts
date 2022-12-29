@@ -13,7 +13,7 @@ export interface Order {
 	totalPrice?: number;
 	exists?: boolean;
 	elevNr: number;
-	levering: boolean;
+	lervering: boolean;
 	name: string;
 	roomNumber: number;
 }
