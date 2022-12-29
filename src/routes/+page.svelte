@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { auth, db } from '$lib/firebase';
+	import type { Item } from '$lib/types';
 	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 	import {
 		collection,
@@ -14,10 +15,8 @@
 		setDoc,
 		increment
 	} from 'firebase/firestore';
-	/**
-	 * @type {import("@firebase/firestore").DocumentData[]}
-	 */
-	let items: any[] = [];
+
+	let items: Item[] = [];
 
 	async function getItems() {
 		try {
@@ -60,7 +59,7 @@
 					<p class="text-xl font-bold mr-2">{item.price} kr</p>
 					<button
 						class="btn bg-blue-500 text-white rounded-full px-4 py-2"
-						on:click={() => addToBag(item.id)}>Add to basket</button
+						on:click={() => addToBag(item.id || '')}>Add to basket</button
 					>
 				</div>
 			</div>
