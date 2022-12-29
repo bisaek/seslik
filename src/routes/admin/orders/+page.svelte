@@ -39,6 +39,10 @@
 		console.log(orders);
 	});
 
+	function done(order) {
+		removeOrder(order);
+	}
+
 	function removeOrder(order) {
 		const orderRef = doc(db, 'orders', order.id);
 		deleteDoc(orderRef);
