@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { auth, db } from '$lib/firebase';
-	import { addDoc, collection, doc, getDocs, query } from 'firebase/firestore';
+	import {
+		addDoc,
+		collection,
+		doc,
+		getDocs,
+		query,
+		setDoc
+	} from 'firebase/firestore';
 	import type { Item } from '$lib/types';
 
 	// export let items = [];
 	let lervering = false;
-	let roomNumber: number = 0;
+	let roomNumber: number | null = null;
 	let name: string;
 	let elevNr: number;
 
@@ -16,19 +23,23 @@
 			const itemsQuery = query(
 				collection(db, 'users', auth.currentUser.uid, 'bag')
 			);
+			const userRef = doc(db, 'users', auth.currentUser.uid);
 			const itemsData = await getDocs(itemsQuery);
 			let items: Item[] = [];
 			itemsData.forEach((item) =>
 				items.push({ id: item.id, quantity: item.data().quantity })
 			);
 
-			const orderRef = await addDoc(collection(db, 'orders'), {
+			await addDoc(collection(db, 'orders'), {
 				items,
 				roomNumber,
 				name,
 				elevNr,
 				lervering
 			});
+			if (roomNumber)
+				await setDoc(userRef, { roomNumber, name, elevNr }, { merge: true });
+			else await setDoc(userRef, { name, elevNr }, { merge: true });
 		} catch (error) {
 			console.error(error);
 		}
