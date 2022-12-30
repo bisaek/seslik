@@ -59,6 +59,12 @@
 	{#each orders as order}
 		{#if order.exists}
 			<div>
+				<h2 class="text-xl">order</h2>
+				<p>navn: {order.name}</p>
+				<p>elev nr: {order.elevNr}</p>
+				{#if order.lervering}
+					<p>værelse: {order.roomNumber}</p>
+				{/if}
 				<h2 class="text-xl">products</h2>
 				<ul>
 					{#each order.items || [] as item}
