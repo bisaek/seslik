@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { auth, db } from '$lib/firebase';
+	import { isAdmin, whenLoggedIn } from '$lib/firebaseFun';
 	import type { Item } from '$lib/types';
-	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+	import type { User } from 'firebase/auth';
 	import {
 		collection,
 		addDoc,
@@ -15,8 +16,11 @@
 		setDoc,
 		increment
 	} from 'firebase/firestore';
+	import AdminSettings from '$lib/itemAdmin.svelte';
 
 	let items: Item[] = [];
+	let user: User;
+	let admin = false;
 
 	async function getItems() {
 		try {
@@ -36,6 +40,12 @@
 	}
 	getItems();
 
+	whenLoggedIn(async (_user: User) => {
+		user = _user;
+		admin = await isAdmin(_user.uid);
+		console.log(admin);
+	});
+
 	async function addToBag(ItemId: string) {
 		if (!auth.currentUser) return;
 		console.log(ItemId);
@@ -50,19 +60,28 @@
 
 <div class="flex flex-row gap-8 items-stretch justify-around flex-wrap ">
 	{#each items as item}
-		<div class="product bg-white shadow-md rounded-md p-4 flex items-center">
-			<img src={item.url} alt="Product image" class=" h-32 rounded-full mr-4" />
-			<div class="flex-1">
-				<h3 class="text-2xl font-bold leading-tight mb-2">{item.name}</h3>
-				<p class="text-gray-600 text-sm mb-4">Product description</p>
-				<div class="flex items-center">
-					<p class="text-xl font-bold mr-2">{item.price} kr</p>
-					<button
-						class="btn bg-blue-500 text-white rounded-full px-4 py-2"
-						on:click={() => addToBag(item.id || '')}>Add to basket</button
-					>
+		{#if item.stocks || 0 > 0 || admin}
+			<div class="product bg-white shadow-md rounded-md p-4 flex items-center">
+				<img
+					src={item.url}
+					alt="Product image"
+					class=" h-32 rounded-full mr-4"
+				/>
+				<div class="flex-1">
+					<h3 class="text-2xl font-bold leading-tight mb-2">{item.name}</h3>
+					<p class="text-gray-600 text-sm mb-4">Product description</p>
+					<div class="flex items-center">
+						<p class="text-xl font-bold mr-2">{item.price} kr</p>
+						<button
+							class="btn bg-blue-500 text-white rounded-full px-4 py-2"
+							on:click={() => addToBag(item.id || '')}>Add to basket</button
+						>
+						{#if admin}
+							<AdminSettings {item} />
+						{/if}
+					</div>
 				</div>
 			</div>
-		</div>
+		{/if}
 	{/each}
 </div>
