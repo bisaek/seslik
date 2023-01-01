@@ -4,17 +4,29 @@
 		addDoc,
 		collection,
 		doc,
+		getDoc,
 		getDocs,
 		query,
 		setDoc
 	} from 'firebase/firestore';
 	import type { Item } from '$lib/types';
+	import { whenLoggedIn } from '$lib/firebaseFun';
+	import type { User } from 'firebase/auth';
 
 	// export let items = [];
 	let lervering = false;
 	let roomNumber: number | null = null;
 	let name: string;
 	let elevNr: number;
+
+	whenLoggedIn(async (user: User) => {
+		const userDataRef = doc(db, 'users', user.uid);
+		const userData = await getDoc(userDataRef);
+		roomNumber = userData.data()?.roomNumber;
+		name = userData.data()?.name;
+		elevNr = userData.data()?.elevNr;
+		console.log(userData.data());
+	});
 
 	async function order() {
 		console.log();
