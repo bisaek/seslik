@@ -8,6 +8,13 @@ export async function whenLoggedIn(f: Function) {
 		}
 	});
 }
+export async function whenNotLoggedIn(f: Function) {
+	auth.onAuthStateChanged(async (user) => {
+		if (!user) {
+			f(user);
+		}
+	});
+}
 export async function isAdmin(userId: string) {
 	const adminQuery = query(collection(db, 'admin'));
 	const admins = await getDocs(adminQuery);
