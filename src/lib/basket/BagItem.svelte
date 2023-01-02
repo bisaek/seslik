@@ -13,7 +13,12 @@
 	let removed = false;
 
 	function updateItem() {
-		if (!auth.currentUser) return;
+		if (!auth.currentUser) {
+			let bag = JSON.parse(localStorage.getItem('bag') || '{}');
+			bag[item.id].quantity = item.quantity;
+			localStorage.setItem('bag', JSON.stringify(bag));
+			return;
+		}
 		const itemRef = doc(
 			db,
 			'users',
