@@ -17,6 +17,7 @@
 		increment
 	} from 'firebase/firestore';
 	import AdminSettings from '$lib/itemAdmin.svelte';
+	import { json } from '@sveltejs/kit';
 
 	let items: Item[] = [];
 	let user: User;
@@ -47,7 +48,13 @@
 	});
 
 	async function addToBag(ItemId: string) {
-		if (!auth.currentUser) return;
+		if (!auth.currentUser) {
+			let localBag = JSON.parse(localStorage.getItem('bag') || '{}');
+			if (localBag[ItemId]) localBag[ItemId].quantity++;
+			else localBag[ItemId] = { quantity: 1 };
+			localStorage.setItem('bag', JSON.stringify(localBag));
+			return;
+		}
 		console.log(ItemId);
 		try {
 			const userRef = doc(db, 'users', auth.currentUser?.uid, 'bag', ItemId);
