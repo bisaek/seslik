@@ -31,6 +31,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@capacitor/cli": "^4.6.2",
+		"@capacitor/core": "^4.6.2",
 		"animejs": "^3.2.1",
 		"firebase": "^9.15.0",
 		"zod": "^3.20.2"
